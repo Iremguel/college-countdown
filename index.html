@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>College Countdown</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #1e1e2e;
+            color: #ffffff;
+        }
+        #countdown {
+            font-size: 3em;
+            font-weight: bold;
+        }
+        #message {
+            font-size: 1.2em;
+        }
+    </style>
+</head>
+<body>
+    <h2>📅 Days Until College Ends:</h2>
+    <div id="countdown"></div>
+    <p id="message"></p>
+
+    <script>
+        // Set your college end date here (YYYY-MM-DD)
+        const endDate = new Date("2026-06-30");
+
+        function updateCountdown() {
+            const now = new Date();
+            const timeDiff = endDate - now;
+            const daysLeft = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
+
+            document.getElementById("countdown").innerText = daysLeft;
+
+            if (daysLeft <= 0) {
+                document.getElementById("message").innerText = "🎓 Congratulations! You're done!";
+            } else {
+                document.getElementById("message").innerText = `Keep going! ${daysLeft} days to go! 🚀`;
+            }
+        }
+
+        updateCountdown();
+        setInterval(updateCountdown, 1000); // Update every second
+    </script>
+</body>
+</html>
