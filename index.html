@@ -3,54 +3,87 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>College Countdown</title>
+    <title>Countdown</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            text-align: center;
+            font-family: "Inter", sans-serif;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             height: 100vh;
             margin: 0;
-            background-color: #1e1e2e;
-            color: #ffffff;
+            background-color: #f7f7f7;
+            color: #333;
+            text-align: center;
+        }
+        #container {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease-in-out;
         }
         #countdown {
-            font-size: 3em;
-            font-weight: bold;
+            font-size: 4em;
+            font-weight: 600;
+            margin: 20px 0;
+            color: #222;
         }
-        #message {
+        input {
             font-size: 1.2em;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            background: #fff;
+            color: #333;
+            text-align: center;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+        input:focus {
+            border-color: #555;
+        }
+        input::placeholder {
+            color: #aaa;
         }
     </style>
 </head>
 <body>
-    <h2>📅 Days Until College Ends:</h2>
-    <div id="countdown"></div>
-    <p id="message"></p>
+    <div id="container">
+        <input type="date" id="endDateInput">
+        <div id="countdown">-</div>
+    </div>
 
     <script>
-        // Set your college end date here (YYYY-MM-DD)
-        const endDate = new Date("2026-06-30");
+        const input = document.getElementById("endDateInput");
+        const countdown = document.getElementById("countdown");
 
         function updateCountdown() {
+            const endDate = new Date(input.value);
+            if (isNaN(endDate)) {
+                countdown.innerText = "-";
+                return;
+            }
             const now = new Date();
             const timeDiff = endDate - now;
             const daysLeft = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
-
-            document.getElementById("countdown").innerText = daysLeft;
-
-            if (daysLeft <= 0) {
-                document.getElementById("message").innerText = "🎓 Congratulations! You're done!";
-            } else {
-                document.getElementById("message").innerText = `Keep going! ${daysLeft} days to go! 🚀`;
-            }
+            countdown.innerText = daysLeft >= 0 ? daysLeft : "0";
         }
 
-        updateCountdown();
-        setInterval(updateCountdown, 1000); // Update every second
+        input.addEventListener("change", () => {
+            localStorage.setItem("countdownDate", input.value);
+            updateCountdown();
+        });
+
+        // Load saved date
+        const savedDate = localStorage.getItem("countdownDate");
+        if (savedDate) {
+            input.value = savedDate;
+            updateCountdown();
+        }
+
+        setInterval(updateCountdown, 1000);
     </script>
 </body>
 </html>
